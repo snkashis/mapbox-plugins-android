@@ -9,6 +9,8 @@ import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
+
 import com.mapbox.mapboxsdk.camera.CameraPosition;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.maps.MapView;
@@ -35,7 +37,7 @@ public class PressForSymbolActivity extends AppCompatActivity implements Style.O
   protected void onCreate(@Nullable final Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_annotation);
-
+    AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
     mapView = findViewById(R.id.mapView);
     mapView.onCreate(savedInstanceState);
     mapView.getMapAsync(map -> {
@@ -47,8 +49,7 @@ public class PressForSymbolActivity extends AppCompatActivity implements Style.O
         .bearing(90)
         .build()
       );
-      mapboxMap.addOnMapLongClickListener(this::addSymbol);
-      mapboxMap.addOnMapClickListener(this::addSymbol);
+
       mapboxMap.setStyle(new Style.Builder().fromUrl(Style.MAPBOX_STREETS)
         .withImage(ID_ICON, generateBitmap(R.drawable.mapbox_ic_place)), this);
     });
@@ -59,13 +60,11 @@ public class PressForSymbolActivity extends AppCompatActivity implements Style.O
     symbolManager = new SymbolManager(mapView, mapboxMap, style);
     symbolManager.setIconAllowOverlap(true);
     symbolManager.setTextAllowOverlap(true);
+    mapboxMap.addOnMapLongClickListener(this::addSymbol);
+    mapboxMap.addOnMapClickListener(this::addSymbol);
   }
 
   private boolean addSymbol(LatLng point) {
-    if(symbolManager==null){
-      return false;
-    }
-
     symbolManager.create(new SymbolOptions()
       .withLatLng(point)
       .withIconImage(ID_ICON)
