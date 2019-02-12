@@ -197,7 +197,7 @@ public final class LocalizationPlugin {
     if (mapLocale != null) {
       setMapLanguage(mapLocale);
     } else {
-      Timber.e("Couldn't match Locale %s to a MapLocale", locale.getDisplayName());
+      Timber.w("Couldn't match Locale %s to a MapLocale", locale.getDisplayName());
     }
   }
 
@@ -241,7 +241,7 @@ public final class LocalizationPlugin {
         if (url == null) {
           url = "not found";
         }
-        Timber.w("The %s (%s) source is not based on Mapbox Vector Tiles. Supported sources:\n %s",
+        Timber.i("The %s (%s) source is not based on Mapbox Vector Tiles. Supported sources:\n %s",
           source.getId(), url, SUPPORTED_SOURCES);
       }
     }
@@ -320,7 +320,7 @@ public final class LocalizationPlugin {
     if (mapLocale != null) {
       setCameraToLocaleCountry(mapLocale, padding);
     } else {
-      Timber.e("Couldn't match Locale %s to a MapLocale", locale.getDisplayName());
+      Timber.w("Couldn't match Locale %s to a MapLocale", locale.getDisplayName());
     }
   }
 
